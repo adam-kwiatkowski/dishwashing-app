@@ -73,13 +73,7 @@ export default {
         };
     },
     props: ["utensils"],
-    created() {
-        console.log(this.utensils);
-    },
     methods: {
-        displayUtensil(id) {
-            console.log(id);
-        },
 				chooseAmount(id) {
 					this.selectedUtensil = this.utensils.data.find(
                 (utensil) => utensil.id === id

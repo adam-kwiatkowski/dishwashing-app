@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\UtensilController;
+use App\Http\Controllers\DishwashingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,4 +35,8 @@ Route::get('utensils', [UtensilController::class, 'index'])
     ->middleware('auth');
 
 Route::post('utensils/use', [UtensilController::class, 'useUtensils'])
+    ->middleware('auth');
+
+Route::get('dishwashing', [DishwashingController::class, 'index'])
+    ->name('dishwashing')
     ->middleware('auth');

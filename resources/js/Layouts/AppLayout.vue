@@ -29,6 +29,12 @@
                                     Utensils
                                 </jet-nav-link>
                             </div>
+
+                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                <jet-nav-link :href="route('dishwashing')" :active="route().current('dishwashing')">
+                                    Dishwashing
+                                </jet-nav-link>
+                            </div>
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
@@ -154,6 +160,10 @@
                         
                         <jet-responsive-nav-link :href="route('utensils')" :active="route().current('utensils')">
                             Utensils
+                        </jet-responsive-nav-link>
+
+                        <jet-responsive-nav-link :href="route('dishwashing')" :active="route().current('dishwashing')">
+                            Dishwashing
                         </jet-responsive-nav-link>
                     </div>
 
