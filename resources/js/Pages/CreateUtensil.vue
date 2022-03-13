@@ -8,7 +8,7 @@
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <UtensilForm/>
+                <UtensilForm :errors_list="errors"/>
             </div>
         </div>
     </app-layout>
@@ -24,5 +24,6 @@
             AppLayout,
             UtensilForm,
         },
+        props: ['errors'],
     })
 </script>

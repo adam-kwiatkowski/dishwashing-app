@@ -13,8 +13,8 @@
       cursor-pointer
     "
   >
-    <div class="shrink-0 h-24 w-24 bg-gray-100 rounded-full">
-      <img class="h-24 w-24 rounded-full" :src="this.image_url" alt="" />
+    <div class="shrink-0 h-16 w-16 sm:h-24 sm:w-24 bg-gray-100 rounded-full">
+      <img class="h-16 w-16 sm:h-24 sm:w-24 rounded-full" :src="this.image_url" alt="" />
     </div>
     <div class="text-center pt-4">
       <div class="text-sm leading-5 font-medium text-gray-900">

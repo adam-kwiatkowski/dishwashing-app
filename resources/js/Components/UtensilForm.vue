@@ -14,6 +14,7 @@
 
           <FilePicker v-model="form.photo" :progress="form.progress" class="py-4 align-self-end m-4"/>
           <div v-if="!form.progress" class="h-3 mt-4"></div>
+          <p v-if="errors_list.photo" class="mt-2 text-sm text-red-600 dark:text-red-500">{{errors_list.photo}}</p>
         </div>
       </div>
       <div class="bg-indigo-100 rounded-lg p-4 pb-16">
@@ -39,6 +40,7 @@
               v-model="form.name"
               placeholder="Name"
             />
+            <p v-if="errors_list.name" class="mt-2 text-sm text-red-600 dark:text-red-500">{{errors_list.name}}</p>
           </div>
           <div class="col-span-2">
             <label class="block text-sm font-medium text-gray-700">
@@ -61,6 +63,7 @@
               v-model="form.quantity"
               placeholder="Quantity"
             />
+            <p v-if="errors_list.quantity" class="mt-2 text-sm text-red-600 dark:text-red-500">{{errors_list.quantity}}</p>
           </div>
         </div>
       </div>
@@ -146,6 +149,7 @@ export default {
         FilePicker,
         Link
     },
+    props: ['errors_list'],
     setup () {
         const form = useForm({
             name: null,
