@@ -18,7 +18,7 @@
         :key="utensil.id"
         :id="utensil.id"
         :name="utensil.name"
-        :quantity="utensil.chosenAmount"
+        :quantity="utensil.used"
         @click="$emit('removed', utensil)"
         class="hover:bg-red-200"
       ></UtensilCard>
@@ -48,7 +48,6 @@ defineEmits({
 });
 
 function use() {
-  console.log('use');
   Inertia.post('/utensils/use', {
     utensils: store.basket,
   });

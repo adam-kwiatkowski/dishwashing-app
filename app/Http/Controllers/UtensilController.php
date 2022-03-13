@@ -27,15 +27,19 @@ class UtensilController extends Controller
         $utensils = $request->utensils;
         $user = auth()->user();
         foreach ($utensils as $utensil) {
+            $dbUtensil = Utensil::find($utensil['id']);
+            $dbUtensil->used = $dbUtensil->used + $utensil['used'];
+            $dbUtensil->save();
+
             Event::create([
                 'user_id' => $user->id,
                 'utensil_id' => $utensil['id'],
                 'type' => 'used',
-                'used' => $utensil['chosenAmount'],
+                'quantity' => $utensil['used'],
             ]);
         }
 
-        return Redirect::route('utensils');
+        return Redirect::route('utensils.index');
     }
 
     public function washUtensils(Request $request)
@@ -43,6 +47,10 @@ class UtensilController extends Controller
         $utensils = $request->utensils;
         $user = auth()->user();
         foreach ($utensils as $utensil) {
+            $dbUtensil = Utensil::find($utensil['id']);
+            $dbUtensil->used = 0;
+            $dbUtensil->save();
+
             Event::create([
                 'user_id' => $user->id,
                 'utensil_id' => $utensil['id'],
@@ -51,7 +59,7 @@ class UtensilController extends Controller
             ]);
         }
 
-        return Redirect::route('dishwashing');
+        return Redirect::route('dishwashing.index');
     }
 
     /**
@@ -61,7 +69,7 @@ class UtensilController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('CreateUtensil');
     }
 
     /**
@@ -72,7 +80,17 @@ class UtensilController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        Utensil::create([
+            'name' => $request->name,
+            'quantity' => $request->quantity,
+        ]);
+
+        return Redirect::route('utensils.index');
     }
 
     /**

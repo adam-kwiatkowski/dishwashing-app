@@ -38,8 +38,5 @@ export default {
         UtensilsSink,
         EventFeed,
     },
-    mounted() {
-      console.log(this.utensils);
-    },
 }
 </script>

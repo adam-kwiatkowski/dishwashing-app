@@ -25,13 +25,13 @@
                             </div>
 
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <jet-nav-link :href="route('utensils')" :active="route().current('utensils')">
+                                <jet-nav-link :href="route('utensils.index')" :active="route().current('utensils.index')">
                                     Utensils
                                 </jet-nav-link>
                             </div>
 
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <jet-nav-link :href="route('dishwashing')" :active="route().current('dishwashing')">
+                                <jet-nav-link :href="route('dishwashing.index')" :active="route().current('dishwashing.index')">
                                     Dishwashing
                                 </jet-nav-link>
                             </div>
@@ -158,11 +158,11 @@
                             Dashboard
                         </jet-responsive-nav-link>
                         
-                        <jet-responsive-nav-link :href="route('utensils')" :active="route().current('utensils')">
+                        <jet-responsive-nav-link :href="route('utensils.index')" :active="route().current('utensils.index')">
                             Utensils
                         </jet-responsive-nav-link>
 
-                        <jet-responsive-nav-link :href="route('dishwashing')" :active="route().current('dishwashing')">
+                        <jet-responsive-nav-link :href="route('dishwashing.index')" :active="route().current('dishwashing.index')">
                             Dishwashing
                         </jet-responsive-nav-link>
                     </div>

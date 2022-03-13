@@ -9,7 +9,7 @@
     "
   >
     <div class="grid grid-cols-3 sm:grid-cols-5 gap-4">
-      <BlankCard />
+      <BlankCard @click="createNew"/>
       <UtensilCard
         v-for="utensil in utensils.data"
         :key="utensil.id"
@@ -34,7 +34,7 @@
     <div class="flex flex-row w-full justify-center">
       <NumberInput
         :max="selectedUtensil.quantity"
-        v-model="selectedUtensil.chosenAmount"
+        v-model="selectedUtensil.used"
       ></NumberInput>
     </div>
     <button
@@ -57,6 +57,7 @@ import Pagination from "@/Components/Pagination.vue";
 import BlankCard from "@/Components/BlankCard.vue";
 import Modal from "@/Components/Modal.vue";
 import NumberInput from "@/Components/NumberInput.vue";
+import { Inertia } from '@inertiajs/inertia';
 
 export default {
     components: {
@@ -78,7 +79,7 @@ export default {
 					this.selectedUtensil = this.utensils.data.find(
                 (utensil) => utensil.id === id
             );
-					this.selectedUtensil.chosenAmount = 1;
+					this.selectedUtensil.used = 1;
 					if (this.selectedUtensil.quantity == 1) {
 						this.$emit('added', this.selectedUtensil);
 					}
@@ -86,6 +87,9 @@ export default {
 						this.showModal = true;
 					}
 				},
+        createNew() {
+          Inertia.visit('/utensils/create');
+        },
     },
 		emits: ["added"],
 };

@@ -14,4 +14,8 @@ class Utensil extends Model
         'quantity',
         'used',
     ];
+
+    protected $attributes = [
+        'used' => 0,
+    ];
 }

@@ -31,15 +31,25 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 })->name('dashboard');
 
 Route::get('utensils', [UtensilController::class, 'index'])
-    ->name('utensils')
+    ->name('utensils.index')
+    ->middleware('auth');
+
+Route::get('utensils/create', [UtensilController::class, 'create'])
+    ->name('utensils.create')
+    ->middleware('auth');
+
+Route::post('utensils', [UtensilController::class, 'store'])
+    ->name('utensils.store')
     ->middleware('auth');
 
 Route::post('utensils/use', [UtensilController::class, 'useUtensils'])
+    ->name('utensils.use')
     ->middleware('auth');
 
 Route::post('utensils/wash', [UtensilController::class, 'washUtensils'])
+    ->name('utensils.wash')
     ->middleware('auth');
 
 Route::get('dishwashing', [DishwashingController::class, 'index'])
-    ->name('dishwashing')
+    ->name('dishwashing.index')
     ->middleware('auth');

@@ -11,7 +11,7 @@
       sm:ml-0
     "
   >
-    <div class="grid grid-cols-3 sm:grid-cols-4 gap-4" v-if="Object.keys(utensils).length > 0">
+    <div class="grid grid-cols-3 sm:grid-cols-4 gap-4" v-if="!sinkEmpty">
       <TransitionGroup>
         <UtensilCard
           v-for="utensil in utensils"
@@ -43,6 +43,7 @@
     </div>
     <button
       class="bg-indigo-300 rounded-lg text-white px-4 py-2 mt-4 w-full"
+      v-if="!sinkEmpty"
       @click.prevent="wash"
     >
       Wash
@@ -84,7 +85,13 @@ export default {
       });
       this.chosen = [];
     },
-  }
+  },
+  computed: {
+    sinkEmpty() {
+      return this.utensils.length === 0;
+    },
+  },
+  emits: ["washed"],
 }
 
 </script>
