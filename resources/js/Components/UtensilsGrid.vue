@@ -16,6 +16,7 @@
         :id="utensil.id"
         :name="utensil.name"
         :quantity="utensil.quantity"
+        :image_url="utensil.image_url"
         @click="chooseAmount(utensil.id)"
       ></UtensilCard>
     </div>

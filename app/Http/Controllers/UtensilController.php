@@ -7,6 +7,7 @@ use App\Models\Event;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 
 class UtensilController extends Controller
 {
@@ -85,9 +86,21 @@ class UtensilController extends Controller
             'quantity' => 'required|integer|min:1',
         ]);
 
+        if (isset($request->photo)) {
+            $request->validate([
+                'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+
+            $image = $request->photo->store('public/utensils');
+            $image_url = Storage::url($image);
+        } else {
+            $image_url = null;
+        }
+
         Utensil::create([
             'name' => $request->name,
             'quantity' => $request->quantity,
+            'image_url' => $image_url,
         ]);
 
         return Redirect::route('utensils.index');

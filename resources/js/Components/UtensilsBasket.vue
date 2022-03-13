@@ -19,6 +19,7 @@
         :id="utensil.id"
         :name="utensil.name"
         :quantity="utensil.used"
+        :image_url="utensil.image_url"
         @click="$emit('removed', utensil)"
         class="hover:bg-red-200"
       ></UtensilCard>

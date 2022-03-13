@@ -14,7 +14,7 @@
     "
   >
     <div class="shrink-0 h-24 w-24 bg-gray-100 rounded-full">
-      <img class="h-24 w-24 rounded-full" :src="src" alt="" />
+      <img class="h-24 w-24 rounded-full" :src="this.image_url" alt="" />
     </div>
     <div class="text-center pt-4">
       <div class="text-sm leading-5 font-medium text-gray-900">
@@ -29,11 +29,8 @@
 
 <script>
 export default {
-	props: ["id", "name", "quantity"],
+	props: ["id", "name", "quantity", "image_url"],
 	computed: {
-		src() {
-				return `https://source.unsplash.com/collection/11440408/100x100?${this.id}`;
-		},
 		capitalizedName() {
 				return this.name.charAt(0).toUpperCase() + this.name.slice(1);
 		},

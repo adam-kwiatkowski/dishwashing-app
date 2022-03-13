@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->integer('quantity')->default(1);
             $table->integer('used')->default(0);
+            $table->string('image_url')->nullable();
             $table->timestamps();
         });
     }

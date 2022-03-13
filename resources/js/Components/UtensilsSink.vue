@@ -18,7 +18,8 @@
           :key="utensil.id"
           :id="utensil.id"
           :name="utensil.name"
-          :quantity="utensil.chosenAmount"
+          :quantity="utensil.used"
+          :image_url="utensil.image_url"
           :class="{'bg-gray-300': chosen.includes(utensil)}"
           @click="choose(utensil)"
         ></UtensilCard>

@@ -13,6 +13,7 @@ class Utensil extends Model
         'name',
         'quantity',
         'used',
+        'image_url',
     ];
 
     protected $attributes = [

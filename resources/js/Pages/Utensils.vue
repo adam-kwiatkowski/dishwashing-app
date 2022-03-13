@@ -48,5 +48,8 @@ export default {
 			UtensilsGrid,
 			UtensilsBasket,
 		},
+    mounted() {
+      console.log(this.utensils);
+    },
 };
 </script>
