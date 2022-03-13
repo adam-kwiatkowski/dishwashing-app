@@ -6,7 +6,7 @@
           <div class="shrink-0 h-48 w-48 bg-gray-100 rounded-full">
             <img
               v-if="previewURL"
-              class="w-48 h-48 rounded-full"
+              class="w-48 h-48 rounded-full object-cover"
               :src="previewURL"
               alt=""
             />

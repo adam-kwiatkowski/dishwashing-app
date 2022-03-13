@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class UtensilController extends Controller
 {
@@ -88,11 +89,22 @@ class UtensilController extends Controller
 
         if (isset($request->photo)) {
             $request->validate([
-                'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:8192',
             ]);
 
-            $image = $request->photo->store('public/utensils');
-            $image_url = Storage::url($image);
+            $image_path = $request->photo->store('public/utensils');
+            $image_url = Storage::url($image_path);
+            
+            $image = Image::make(Storage::get($image_path));
+
+            if ($image->width() > $image->height()) {
+                $image->rotate(-90);
+                $image->crop($image->width(), $image->width());
+            } else {
+                $image->crop($image->height(), $image->height());
+            }
+            $image->save(ltrim($image_url, '/'), 70);
+            
         } else {
             $image_url = null;
         }
