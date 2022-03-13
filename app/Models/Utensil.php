@@ -12,5 +12,6 @@ class Utensil extends Model
     protected $fillable = [
         'name',
         'quantity',
+        'used',
     ];
 }

@@ -31,11 +31,27 @@ class UtensilController extends Controller
                 'user_id' => $user->id,
                 'utensil_id' => $utensil['id'],
                 'type' => 'used',
-                'quantity' => $utensil['chosenAmount'],
+                'used' => $utensil['chosenAmount'],
             ]);
         }
 
         return Redirect::route('utensils');
+    }
+
+    public function washUtensils(Request $request)
+    {
+        $utensils = $request->utensils;
+        $user = auth()->user();
+        foreach ($utensils as $utensil) {
+            Event::create([
+                'user_id' => $user->id,
+                'utensil_id' => $utensil['id'],
+                'type' => 'washed',
+                'quantity' => $utensil['used'],
+            ]);
+        }
+
+        return Redirect::route('dishwashing');
     }
 
     /**

@@ -37,6 +37,9 @@ Route::get('utensils', [UtensilController::class, 'index'])
 Route::post('utensils/use', [UtensilController::class, 'useUtensils'])
     ->middleware('auth');
 
+Route::post('utensils/wash', [UtensilController::class, 'washUtensils'])
+    ->middleware('auth');
+
 Route::get('dishwashing', [DishwashingController::class, 'index'])
     ->name('dishwashing')
     ->middleware('auth');

@@ -8,7 +8,7 @@
 
     <div class="sm:py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="flex items-start grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="flex items-start grid grid-cols-7 gap-4">
           <UtensilsSink :utensils="utensils"></UtensilsSink>
           <EventFeed :events="events"></EventFeed>
         </div>
