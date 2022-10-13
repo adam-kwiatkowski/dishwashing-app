@@ -2,8 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\UtensilController;
-use App\Http\Controllers\API\EventController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,9 +13,6 @@ use App\Http\Controllers\API\EventController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::apiResource('utensils', UtensilController::class);
-Route::apiResource('events', EventController::class);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

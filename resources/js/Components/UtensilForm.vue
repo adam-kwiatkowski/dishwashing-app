@@ -60,10 +60,10 @@
                 rounded
                 focus:outline-none focus:border-gray-500
               "
-              v-model="form.quantity"
+              v-model="form.total_amount"
               placeholder="Quantity"
             />
-            <p v-if="errors_list.quantity" class="mt-2 text-sm text-red-600 dark:text-red-500">{{errors_list.quantity}}</p>
+            <p v-if="errors_list.total_amount" class="mt-2 text-sm text-red-600 dark:text-red-500">{{errors_list.total_amount}}</p>
           </div>
         </div>
       </div>
@@ -153,7 +153,7 @@ export default {
     setup () {
         const form = useForm({
             name: null,
-            quantity: null,
+            total_amount: null,
             photo: null,
         })
 

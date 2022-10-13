@@ -15,10 +15,8 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->integer('quantity')->default(1);
-            $table->foreignId('utensil_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->enum('type', ['used', 'washed']);
+            $table->foreignId('event_type_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

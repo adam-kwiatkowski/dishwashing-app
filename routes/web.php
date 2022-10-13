@@ -1,10 +1,10 @@
 <?php
 
+use App\Http\Controllers\EventsController;
+use App\Http\Controllers\UtensilController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Http\Controllers\UtensilController;
-use App\Http\Controllers\DishwashingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,14 +42,10 @@ Route::post('utensils', [UtensilController::class, 'store'])
     ->name('utensils.store')
     ->middleware('auth');
 
-Route::post('utensils/use', [UtensilController::class, 'useUtensils'])
-    ->name('utensils.use')
-    ->middleware('auth');
-
-Route::post('utensils/wash', [UtensilController::class, 'washUtensils'])
-    ->name('utensils.wash')
-    ->middleware('auth');
-
-Route::get('dishwashing', [DishwashingController::class, 'index'])
+Route::get('dishwashing', [EventsController::class, 'index'])
     ->name('dishwashing.index')
+    ->middleware('auth');
+
+Route::post('events', [EventsController::class, 'store'])
+    ->name('events.store')
     ->middleware('auth');

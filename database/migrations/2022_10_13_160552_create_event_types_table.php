@@ -13,13 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('utensils', function (Blueprint $table) {
+        Schema::create('event_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('total_amount')->default(1);
-            $table->integer('available')->default(1);
-            $table->string('image_url')->nullable();
-            $table->timestamps();
         });
     }
 
@@ -30,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('utensils');
+        Schema::dropIfExists('event_types');
     }
 };

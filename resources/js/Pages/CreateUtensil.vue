@@ -15,15 +15,15 @@
 </template>
 
 <script>
-    import { defineComponent } from 'vue'
-    import AppLayout from '@/Layouts/AppLayout.vue'
-    import UtensilForm from '@/Components/UtensilForm.vue'
+import {defineComponent} from 'vue'
+import AppLayout from '@/Layouts/AppLayout.vue'
+import UtensilForm from '@/Components/UtensilForm.vue'
 
-    export default defineComponent({
-        components: {
-            AppLayout,
-            UtensilForm,
-        },
-        props: ['errors'],
-    })
+export default defineComponent({
+    components: {
+        AppLayout,
+        UtensilForm,
+    },
+    props: ['errors'],
+})
 </script>

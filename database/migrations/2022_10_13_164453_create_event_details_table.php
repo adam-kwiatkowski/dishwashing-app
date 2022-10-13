@@ -13,12 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('utensils', function (Blueprint $table) {
+        Schema::create('event_details', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->integer('total_amount')->default(1);
-            $table->integer('available')->default(1);
-            $table->string('image_url')->nullable();
+            $table->integer('amount')->default(1);
+            $table->foreignId('event_id')->constrained()->onDelete('cascade');
+            $table->foreignId('utensil_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('utensils');
+        Schema::dropIfExists('event_details');
     }
 };

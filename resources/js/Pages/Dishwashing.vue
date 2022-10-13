@@ -1,20 +1,20 @@
 <template>
-  <app-layout title="Dishwashing">
-    <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        Dishwashing
-      </h2>
-    </template>
+    <app-layout title="Dishwashing">
+        <template #header>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                Dishwashing
+            </h2>
+        </template>
 
-    <div class="sm:py-12">
-      <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="flex items-start grid grid-cols-7 gap-4">
-          <UtensilsSink :utensils="utensils"></UtensilsSink>
-          <EventFeed :events="events"></EventFeed>
+        <div class="sm:py-12">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="flex items-start grid grid-cols-7 gap-4">
+                    <UtensilsSink :utensils="utensils"></UtensilsSink>
+                    <EventFeed :events="events"></EventFeed>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </app-layout>
+    </app-layout>
 </template>
 
 <script>
