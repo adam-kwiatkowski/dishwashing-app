@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
 use App\Models\Utensil;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -67,5 +68,10 @@ class UtensilController extends Controller
         ]);
 
         return Redirect::route('utensils.index');
+    }
+
+    public function show(Utensil $utensil)
+    {
+        return $utensil->latest_event()->get();
     }
 }

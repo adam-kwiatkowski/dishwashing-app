@@ -2,24 +2,61 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\EventResource;
 use App\Models\Event;
 use App\Models\EventType;
+use App\Models\Utensil;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Validation\Rule;
-use Validator;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class EventsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function index()
+    public function index(): Response
     {
-        //
+        return Inertia::Render('Dishwashing', [
+            'utensils' => Utensil::whereRelation('latest_event.event_type', 'name', 'used')->get(),
+            'events' => EventResource::collection(
+                Event::with('user', 'event_type', 'utensil')
+                    ->orderBy('id', 'desc')
+                    ->get()
+            ),
+        ]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'event_type_id' => 'required|exists:event_types,id',
+            'utensils' => 'required|array',
+            'utensils.*.id' => 'required|exists:utensils,id',
+            'utensils.*.quantity' => 'required|integer|min:1',
+        ]);
+
+        foreach ($request->utensils as $data) {
+            Event::create([
+                'amount' => $data['quantity'],
+                'user_id' => auth()->id(),
+                'utensil_id' => $data['id'],
+                'event_type_id' => $request->event_type_id,
+            ]);
+        }
+
+        return Redirect::route('events.index');
     }
 
     /**
@@ -33,42 +70,9 @@ class EventsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function store(Request $request)
-    {
-        Log::channel('stderr')->info('EventsController@store');
-        Log::channel('stderr')->info($request->all());
-        $request->validate([
-            'event_type_id'=>'required|exists:event_types,id',
-            'utensils'=>'required|array',
-            'utensils.*.id'=>'required|exists:utensils,id',
-            'utensils.*.used'=>'required|integer|min:1',
-        ]);
-        Log::channel('stderr')->info('EventsController@store: validation passed');
-
-        $event = Event::create([
-            'event_type_id'=>$request->event_type_id,
-            'user_id'=>auth()->id(),
-        ]);
-
-        foreach ($request->utensils as $utensil) {
-            $event->details()->create([
-                'utensil_id'=>$utensil['id'],
-                'amount'=>$utensil['used'],
-            ]);
-        }
-
-        return Redirect::route('events.index');
-    }
-
-    /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Event  $event
+     * @param Event $event
      * @return \Illuminate\Http\Response
      */
     public function show(Event $event)
@@ -79,7 +83,7 @@ class EventsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Event  $event
+     * @param Event $event
      * @return \Illuminate\Http\Response
      */
     public function edit(Event $event)
@@ -90,8 +94,8 @@ class EventsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Event  $event
+     * @param Request $request
+     * @param Event $event
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Event $event)
@@ -102,7 +106,7 @@ class EventsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Event  $event
+     * @param Event $event
      * @return \Illuminate\Http\Response
      */
     public function destroy(Event $event)

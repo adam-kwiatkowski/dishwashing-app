@@ -38,7 +38,7 @@
         </div>
         <div class="flex flex-row w-full justify-center">
             <NumberInput
-                v-model="selectedUtensil.used"
+                v-model="selectedUtensil.quantity"
                 :max="selectedUtensil.available"
             ></NumberInput>
         </div>
@@ -84,7 +84,7 @@ export default {
             this.selectedUtensil = this.utensils.data.find(
                 (utensil) => utensil.id === id
             );
-            this.selectedUtensil.used = 1;
+            this.selectedUtensil.quantity = 1;
             if (this.selectedUtensil.available <= 0)
                 return;
 

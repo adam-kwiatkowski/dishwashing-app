@@ -42,8 +42,12 @@ Route::post('utensils', [UtensilController::class, 'store'])
     ->name('utensils.store')
     ->middleware('auth');
 
-Route::get('dishwashing', [EventsController::class, 'index'])
-    ->name('dishwashing.index')
+Route::get('utensils/{utensil}', [UtensilController::class, 'show'])
+    ->name('utensils.show')
+    ->middleware('auth');
+
+Route::get('events', [EventsController::class, 'index'])
+    ->name('events.index')
     ->middleware('auth');
 
 Route::post('events', [EventsController::class, 'store'])
