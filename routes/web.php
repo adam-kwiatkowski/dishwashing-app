@@ -50,6 +50,10 @@ Route::get('events', [EventsController::class, 'index'])
     ->name('events.index')
     ->middleware('auth');
 
-Route::post('events', [EventsController::class, 'store'])
-    ->name('events.store')
+Route::post('events/use', [EventsController::class, 'use'])
+    ->name('events.use')
+    ->middleware('auth');
+
+Route::post('events/wash', [EventsController::class, 'wash'])
+    ->name('events.wash')
     ->middleware('auth');

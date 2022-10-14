@@ -32,85 +32,61 @@ class EventsController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @return RedirectResponse
-     */
-    public function store(Request $request)
+    public function use(Request $request): RedirectResponse
     {
         $request->validate([
-            'event_type_id' => 'required|exists:event_types,id',
             'utensils' => 'required|array',
             'utensils.*.id' => 'required|exists:utensils,id',
             'utensils.*.quantity' => 'required|integer|min:1',
         ]);
 
+        $eventType = EventType::where('name', 'used')->first();
+
         foreach ($request->utensils as $data) {
-            Event::create([
-                'amount' => $data['quantity'],
-                'user_id' => auth()->id(),
-                'utensil_id' => $data['id'],
-                'event_type_id' => $request->event_type_id,
-            ]);
+            $utensil = Utensil::find($data['id']);
+            $quantity = $data['quantity'];
+
+            if ($utensil->available >= $quantity) {
+                $utensil->available -= $quantity;
+                $utensil->save();
+                Event::create([
+                    'amount' => $quantity,
+                    'user_id' => auth()->id(),
+                    'utensil_id' => $data['id'],
+                    'event_type_id' => $eventType->id,
+                ]);
+            }
         }
 
         return Redirect::route('events.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function wash(Request $request): RedirectResponse
     {
-        //
-    }
+        $request->validate([
+            'utensils' => 'required|array',
+            'utensils.*.id' => 'required|exists:utensils,id',
+            'utensils.*.quantity' => 'required|integer|min:1',
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param Event $event
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Event $event)
-    {
-        //
-    }
+        $eventType = EventType::where('name', 'washed')->first();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Event $event
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Event $event)
-    {
-        //
-    }
+        foreach ($request->utensils as $data) {
+            $utensil = Utensil::find($data['id']);
+            $quantity = $data['quantity'];
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param Event $event
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Event $event)
-    {
-        //
-    }
+            if ($utensil->total_amount <= $quantity + $utensil->available) {
+                $utensil->available += $quantity;
+                $utensil->save();
+                Event::create([
+                    'amount' => $quantity,
+                    'user_id' => auth()->id(),
+                    'utensil_id' => $data['id'],
+                    'event_type_id' => $eventType->id,
+                ]);
+            }
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Event $event
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Event $event)
-    {
-        //
+        return Redirect::route('events.index');
     }
 }

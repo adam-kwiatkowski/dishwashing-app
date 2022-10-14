@@ -11,19 +11,36 @@
           sm:ml-0
         "
     >
-        <div v-if="!sinkEmpty" class="grid grid-cols-3 sm:grid-cols-4 gap-4">
-            <TransitionGroup>
-                <UtensilCard
-                    v-for="utensil in utensils"
-                    :id="utensil.id"
-                    :key="utensil.id"
-                    :class="{'bg-gray-300': chosen.includes(utensil)}"
-                    :image_url="utensil.image_url"
-                    :name="utensil.name"
-                    :quantity="utensil.total_amount - utensil.available"
-                    @click="choose(utensil)"
-                ></UtensilCard>
-            </TransitionGroup>
+        <div v-if="!sinkEmpty">
+            <div class="grid grid-cols-3 sm:grid-cols-4 gap-4">
+                <TransitionGroup>
+                    <UtensilCard
+                        v-for="utensil in utensils"
+                        :id="utensil.id"
+                        :key="utensil.id"
+                        :class="{'bg-gray-300': chosen.includes(utensil)}"
+                        :image_url="utensil.image_url"
+                        :name="utensil.name"
+                        :quantity="utensil.total_amount - utensil.available"
+                        @click="choose(utensil)"
+                    />
+                </TransitionGroup>
+            </div>
+            <div v-if="!chosenEmpty" class="w-full h-0.5 bg-gray-300 rounded-full my-4"/>
+            <div v-if="!chosenEmpty" class="grid grid-cols-3 sm:grid-cols-4 gap-4">
+                <TransitionGroup>
+                    <UtensilCard
+                        v-for="utensil in chosen"
+                        :id="utensil.id"
+                        :key="utensil.id"
+                        :class="{'bg-gray-300': chosen.includes(utensil)}"
+                        :image_url="utensil.image_url"
+                        :name="utensil.name"
+                        :quantity="utensil.total_amount - utensil.available"
+
+                    />
+                </TransitionGroup>
+            </div>
         </div>
 
         <div v-else class="flex justify-center mt-4">
@@ -51,15 +68,21 @@
             Wash
         </button>
     </div>
+
+    <Modal :show="showModal" @close="showModal = false">
+        <h1>Chuj</h1>
+    </Modal>
 </template>
 
 <script>
 import UtensilCard from "@/Components/UtensilCard.vue";
 import {Inertia} from '@inertiajs/inertia';
+import Modal from "@/Components/Modal";
 
 export default {
     components: {
         UtensilCard,
+        Modal,
     },
     props: {
         utensils: {
@@ -69,6 +92,7 @@ export default {
     },
     data() {
         return {
+            showModal: true,
             chosen: [],
         };
     },
@@ -81,8 +105,7 @@ export default {
             }
         },
         wash() {
-            Inertia.post("/utensils", {
-                event_type_id: 2,
+            Inertia.post("/events/wash", {
                 utensils: this.chosen,
             });
             this.chosen = [];
@@ -92,6 +115,9 @@ export default {
         sinkEmpty() {
             return this.utensils.length === 0;
         },
+        chosenEmpty() {
+            return this.chosen.length === 0;
+        }
     },
     emits: ["washed"],
 }

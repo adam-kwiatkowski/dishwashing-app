@@ -44,8 +44,7 @@ defineEmits({
 });
 
 function use() {
-    Inertia.post("/events", {
-        event_type_id: 1,
+    Inertia.post("/events/use", {
         utensils: store.basket,
     });
     store.basket = [];
