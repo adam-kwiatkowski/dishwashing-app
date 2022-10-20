@@ -1,6 +1,6 @@
 <template>
   <div v-if="links.length > 3" class="pt-4">
-    <div class="flex flex-1 justify-between sm:hidden">
+    <div class="flex flex-1 justify-between md:hidden">
       <Link
         :href="prev_page_url"
         class="
@@ -59,7 +59,7 @@
       </Link>
     </div>
 
-    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+    <div class="hidden md:flex-1 md:flex md:items-center md:justify-between">
       <div>
         <p class="text-sm text-gray-700 leading-5">
           Showing {{ from }} to {{ to }} of {{ total }} results
@@ -87,6 +87,7 @@
             <Link
               v-else-if="!link.active"
               :key="key + 1"
+              :href="link.url"
               class="
                 mr-1
                 mb-1
@@ -99,7 +100,6 @@
                 hover:bg-white
                 focus:border-indigo-500 focus:text-indigo-500
               "
-              :href="link.url"
               v-html="link.label"
             />
             <span
@@ -126,7 +126,8 @@
 </template>
 
 <script>
-import { Link } from "@inertiajs/inertia-vue3";
+import {Link} from "@inertiajs/inertia-vue3";
+
 export default {
   components: {
     Link,

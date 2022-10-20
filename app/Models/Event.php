@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -36,27 +35,27 @@ use Illuminate\Support\Carbon;
  */
 class Event extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $fillable = [
-        'amount',
-        'user_id',
-        'utensil_id',
-        'event_type_id',
-    ];
+  protected $fillable = [
+    'amount',
+    'user_id',
+    'utensil_id',
+    'event_type_id',
+  ];
 
-    public function event_type(): BelongsTo
-    {
-        return $this->belongsTo(EventType::class);
-    }
+  public function event_type(): BelongsTo
+  {
+    return $this->belongsTo(EventType::class);
+  }
 
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
+  public function user(): BelongsTo
+  {
+    return $this->belongsTo(User::class);
+  }
 
-    public function utensil(): BelongsTo
-    {
-        return $this->belongsTo(Utensil::class);
-    }
+  public function utensil(): BelongsTo
+  {
+    return $this->belongsTo(Utensil::class);
+  }
 }

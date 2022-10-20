@@ -6,7 +6,6 @@ use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
@@ -39,22 +38,22 @@ use Illuminate\Support\Carbon;
  */
 class Utensil extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $fillable = [
-        'name',
-        'total_amount',
-        'available',
-        'image_url',
-    ];
+  protected $fillable = [
+    'name',
+    'total_amount',
+    'available',
+    'image_url',
+  ];
 
-    public function events(): HasMany
-    {
-        return $this->hasMany(Event::class);
-    }
+  public function events(): HasMany
+  {
+    return $this->hasMany(Event::class);
+  }
 
-    public function latest_event(): HasOne
-    {
-        return $this->hasOne(Event::class)->latestOfMany();
-    }
+  public function latest_event(): HasOne
+  {
+    return $this->hasOne(Event::class)->latestOfMany();
+  }
 }

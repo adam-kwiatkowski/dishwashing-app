@@ -6,15 +6,15 @@
           <div class="shrink-0 h-48 w-48 bg-gray-100 rounded-full">
             <img
               v-if="previewURL"
-              class="w-48 h-48 rounded-full object-cover"
               :src="previewURL"
               alt=""
+              class="w-48 h-48 rounded-full object-cover"
             />
           </div>
 
           <FilePicker v-model="form.photo" :progress="form.progress" class="py-4 align-self-end m-4"/>
           <div v-if="!form.progress" class="h-3 mt-4"></div>
-          <p v-if="errors_list.photo" class="mt-2 text-sm text-red-600 dark:text-red-500">{{errors_list.photo}}</p>
+          <p v-if="errors_list.photo" class="mt-2 text-sm text-red-600 dark:text-red-500">{{ errors_list.photo }}</p>
         </div>
       </div>
       <div class="bg-indigo-100 rounded-lg p-4 pb-16">
@@ -24,7 +24,7 @@
               Name
             </label>
             <input
-              type="text"
+              v-model="form.name"
               class="
                 block
                 w-full
@@ -37,17 +37,17 @@
                 rounded
                 focus:outline-none focus:border-gray-500
               "
-              v-model="form.name"
               placeholder="Name"
+              type="text"
             />
-            <p v-if="errors_list.name" class="mt-2 text-sm text-red-600 dark:text-red-500">{{errors_list.name}}</p>
+            <p v-if="errors_list.name" class="mt-2 text-sm text-red-600 dark:text-red-500">{{ errors_list.name }}</p>
           </div>
           <div class="col-span-2">
             <label class="block text-sm font-medium text-gray-700">
               Quantity
             </label>
             <input
-              type="number"
+              v-model="form.total_amount"
               class="
                 block
                 w-full
@@ -60,10 +60,11 @@
                 rounded
                 focus:outline-none focus:border-gray-500
               "
-              v-model="form.total_amount"
               placeholder="Quantity"
+              type="number"
             />
-            <p v-if="errors_list.total_amount" class="mt-2 text-sm text-red-600 dark:text-red-500">{{errors_list.total_amount}}</p>
+            <p v-if="errors_list.total_amount" class="mt-2 text-sm text-red-600 dark:text-red-500">
+              {{ errors_list.total_amount }}</p>
           </div>
         </div>
       </div>
@@ -93,15 +94,14 @@
         >
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
             <path
-              fill-rule="evenodd"
-              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
               clip-rule="evenodd"
+              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+              fill-rule="evenodd"
             />
           </svg>
           <span class="ml-2">Cancel</span>
         </Link>
         <button
-          type="submit"
           class="
             inline-flex
             items-center
@@ -120,6 +120,7 @@
             duration-150
             ease-in-out
           "
+          type="submit"
         >
           Add
           <svg
@@ -128,9 +129,9 @@
             viewBox="0 0 20 20"
           >
             <path
-              fill-rule="evenodd"
-              d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
               clip-rule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
+              fill-rule="evenodd"
             />
           </svg>
         </button>
@@ -141,34 +142,34 @@
 
 <script>
 
-import { useForm, Link } from '@inertiajs/inertia-vue3'
+import {Link, useForm} from '@inertiajs/inertia-vue3'
 import FilePicker from '@/Components/FilePicker.vue'
 
 export default {
-    components: {
-        FilePicker,
-        Link
-    },
-    props: ['errors_list'],
-    setup () {
-        const form = useForm({
-            name: null,
-            total_amount: null,
-            photo: null,
-        })
+  components: {
+    FilePicker,
+    Link
+  },
+  props: ['errors_list'],
+  setup() {
+    const form = useForm({
+      name: null,
+      total_amount: null,
+      photo: null,
+    })
 
-        function submit() {
-            form.progress = {percentage:0}
-            form.post('/utensils')
-        }
-
-        return { form, submit }
-    },
-    computed: {
-        previewURL() {
-            return this.form.photo ? URL.createObjectURL(this.form.photo) : ''
-        }
+    function submit() {
+      form.progress = {percentage: 0}
+      form.post('/utensils')
     }
+
+    return {form, submit}
+  },
+  computed: {
+    previewURL() {
+      return this.form.photo ? URL.createObjectURL(this.form.photo) : ''
+    }
+  }
 }
 
 </script>

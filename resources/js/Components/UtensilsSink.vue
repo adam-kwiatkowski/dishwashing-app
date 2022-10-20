@@ -16,12 +16,12 @@
         <TransitionGroup>
           <UtensilCard
             v-for="utensil in utensils"
-            class="active:bg-gray-300"
             :id="utensil.id"
             :key="utensil.id"
             :image_url="utensil.image_url"
             :name="utensil.name"
             :quantity="utensil.total_amount - utensil.available"
+            class="active:bg-gray-300"
             @click="chooseAmount(utensil)"
           />
         </TransitionGroup>
@@ -59,7 +59,7 @@
   </div>
 
   <Modal :show="showModal" @close="showModal = false">
-    <h1>Wash {{selectedUtensil.name}}</h1>
+    <h1>Wash {{ selectedUtensil.name }}</h1>
     <div class="flex flex-row justify-center">
       <NumberInput
         v-model="selectedUtensil.quantity"
