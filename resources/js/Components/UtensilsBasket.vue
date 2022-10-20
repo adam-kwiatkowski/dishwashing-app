@@ -12,7 +12,7 @@
                     :quantity="utensil.quantity"
                     :image_url="utensil.image_url"
                     @click="$emit('removed', utensil)"
-                    class="hover:bg-red-200"
+                    class="hover:bg-red-200 active:bg-red-300"
                 ></UtensilCard>
             </TransitionGroup>
         </div>
@@ -28,7 +28,7 @@
 <script setup>
 import UtensilCard from "@/Components/UtensilCard.vue";
 import { Inertia } from "@inertiajs/inertia";
-import { store } from "@/store";
+import { useBasketStore } from "@/Stores/basket";
 
 defineProps({
     utensils: {
@@ -45,8 +45,8 @@ defineEmits({
 
 function use() {
     Inertia.post("/events/use", {
-        utensils: store.basket,
+        utensils: useBasketStore.basket,
     });
-    store.basket = [];
+    useBasketStore.basket = [];
 }
 </script>

@@ -6,13 +6,12 @@
       p-2
       sm:p-4
       rounded-lg
-<!--      hover:bg-gray-200-->
+      hover:bg-gray-200
       transition-all
       ease-out
       duration-300
       cursor-pointer
     "
-        :class="hoverColor"
     >
         <div class="shrink-0 h-16 w-16 sm:h-24 sm:w-24 bg-gray-100 rounded-full">
             <img
@@ -34,17 +33,11 @@
 
 <script>
 export default {
-    props: ["id", "name", "quantity", "available", "image_url"],
+    props: ["id", "name", "quantity", "image_url"],
     computed: {
         capitalizedName() {
             return this.name.charAt(0).toUpperCase() + this.name.slice(1);
         },
-        hoverColor() {
-            return {
-                "hover:bg-red-200": this.available === 0,
-                "hover:bg-gray-200": this.available > 0,
-            };
-        }
     },
 };
 </script>

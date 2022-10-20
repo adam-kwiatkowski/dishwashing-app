@@ -12,12 +12,12 @@
                     <div class="flex flex-col col-span-7 sm:col-span-5 sm:gap-4">
                         <UtensilsGrid
                             :utensils="utensils"
-                            @added="(utensil) => store.addUtensil(utensil)"
+                            @added="(utensil) => store.addItem(utensil)"
                         ></UtensilsGrid>
                     </div>
                     <UtensilsBasket
                         :utensils="store.basket"
-                        @removed="(utensil) => store.removeUtensil(utensil)"
+                        @removed="(utensil) => store.removeItem(utensil)"
                     ></UtensilsBasket>
                 </div>
             </div>
@@ -29,12 +29,12 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 import UtensilsGrid from "@/Components/UtensilsGrid.vue";
 import UtensilsBasket from "@/Components/UtensilsBasket.vue";
-import {store} from "@/store";
+import {useBasketStore} from "@/Stores/basket";
 
 export default {
     data() {
         return {
-            store,
+            store: useBasketStore,
         };
     },
     props: {

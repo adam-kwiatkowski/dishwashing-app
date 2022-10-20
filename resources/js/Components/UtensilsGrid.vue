@@ -1,59 +1,62 @@
 <template>
-    <div
-        class="
+  <div
+    class="
       bg-white
       overflow-hidden
       sm:shadow-sm sm:rounded-lg
       p-4
       flex flex-col flex-1
     "
-    >
-        <div class="grid grid-cols-3 sm:grid-cols-5 gap-4">
-            <BlankCard @click="createNew"/>
-            <UtensilCard
-                v-for="utensil in utensils.data"
-                :id="utensil.id"
-                :key="utensil.id"
-                :quantity="utensil.available"
-                :available="utensil.available"
-                :image_url="utensil.image_url"
-                :name="utensil.name"
-                @click="chooseAmount(utensil.id)"
-            ></UtensilCard>
-        </div>
-        <Pagination
-            :from="utensils.from"
-            :links="utensils.links"
-            :next_page_url="utensils.next_page_url"
-            :prev_page_url="utensils.prev_page_url"
-            :to="utensils.to"
-            :total="utensils.total"
-        ></Pagination>
+  >
+    <div class="grid grid-cols-3 sm:grid-cols-5 gap-4">
+      <BlankCard @click="createNew"/>
+      <UtensilCard
+        v-for="utensil in utensils.data"
+        :id="utensil.id"
+        :key="utensil.id"
+        :class="getHoverColor(utensil.available)"
+        :image_url="utensil.image_url"
+        :name="utensil.name"
+        :quantity="utensil.available"
+        class="active:bg-gray-300"
+        @click="chooseAmount(utensil.id)"
+      ></UtensilCard>
     </div>
+    <Pagination
+      :from="utensils.from"
+      :links="utensils.links"
+      :next_page_url="utensils.next_page_url"
+      :prev_page_url="utensils.prev_page_url"
+      :to="utensils.to"
+      :total="utensils.total"
+    ></Pagination>
+  </div>
 
-    <Modal :show="showModal" @close="showModal = false">
-        <div class="flex  justify-between pt-2">
-            <h1>Use {{ selectedUtensil.name }}</h1>
-            <h1 class="text-white bg-gray-300 rounded-full py-1 px-2">{{ selectedUtensil.available }}/{{selectedUtensil.total_amount}} available</h1>
-        </div>
-        <div class="flex flex-row w-full justify-center">
-            <NumberInput
-                v-model="selectedUtensil.quantity"
-                :max="selectedUtensil.available"
-            ></NumberInput>
-        </div>
-        <button
-            class="bg-indigo-300 rounded-lg text-white px-4 py-2 mt-4 w-full"
-            @click="
-                () => {
-                  $emit('added', selectedUtensil);
-                  showModal = false;
-                }
-            "
-        >
-            Add
-        </button>
-    </Modal>
+  <Modal :show="showModal" @close="showModal = false">
+    <div class="flex  justify-between pt-2">
+      <h1>Use {{ selectedUtensil.name }}</h1>
+      <h1 class="text-white bg-gray-300 rounded-full py-1 px-2">{{
+          selectedUtensil.available
+        }}/{{ selectedUtensil.total_amount }} available</h1>
+    </div>
+    <div class="flex flex-row w-full justify-center">
+      <NumberInput
+        v-model="selectedUtensil.quantity"
+        :max="selectedUtensil.available"
+      ></NumberInput>
+    </div>
+    <button
+      class="bg-indigo-300 rounded-lg text-white px-4 py-2 mt-4 w-full"
+      @click="
+        () => {
+          $emit('added', selectedUtensil);
+          showModal = false;
+        }
+      "
+    >
+      Add
+    </button>
+  </Modal>
 </template>
 
 <script>
@@ -63,41 +66,49 @@ import BlankCard from "@/Components/BlankCard.vue";
 import Modal from "@/Components/Modal.vue";
 import NumberInput from "@/Components/NumberInput.vue";
 import {Inertia} from '@inertiajs/inertia';
+import {useBasketStore} from "@/Stores/basket";
 
 export default {
-    components: {
-        UtensilCard,
-        Pagination,
-        BlankCard,
-        Modal,
-        NumberInput,
-    },
-    data() {
-        return {
-            showModal: false,
-            selectedUtensil: Object,
-        };
-    },
-    props: ["utensils"],
-    methods: {
-        chooseAmount(id) {
-            this.selectedUtensil = this.utensils.data.find(
-                (utensil) => utensil.id === id
-            );
-            this.selectedUtensil.quantity = 1;
-            if (this.selectedUtensil.available <= 0)
-                return;
+  components: {
+    UtensilCard,
+    Pagination,
+    BlankCard,
+    Modal,
+    NumberInput,
+  },
+  data() {
+    return {
+      showModal: false,
+      selectedUtensil: Object,
+      store: useBasketStore,
+    };
+  },
+  props: ["utensils"],
+  methods: {
+    chooseAmount(id) {
+      this.selectedUtensil = this.utensils.data.find(
+        (utensil) => utensil.id === id
+      );
+      this.selectedUtensil.quantity = 1;
+      if (this.selectedUtensil.available <= 0)
+        return;
 
-            if (this.selectedUtensil.available === 1) {
-                this.$emit('added', this.selectedUtensil);
-            } else {
-                this.showModal = true;
-            }
-        },
-        createNew() {
-            Inertia.visit('/utensils/create');
-        },
+      if (this.selectedUtensil.available === 1) {
+        this.$emit('added', this.selectedUtensil);
+      } else {
+        this.showModal = true;
+      }
     },
-    emits: ["added"],
+    createNew() {
+      Inertia.visit('/utensils/create');
+    },
+    getHoverColor(available) {
+      return {
+        "hover:bg-red-200": available === 0,
+        "hover:bg-gray-200": available > 0,
+      };
+    },
+  },
+  emits: ["added"],
 };
 </script>
