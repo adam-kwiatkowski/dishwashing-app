@@ -8,7 +8,8 @@
         h-full
         border-dashed border-2
         rounded-lg
-        hover:bg-gray-200 hover:border-solid
+        hover:bg-gray-200
+        hover:border-solid
         transition-all
         duration-300
         ease-in-out
@@ -47,3 +48,7 @@
     </div>
   </div>
 </template>
+
+<script>
+  export default {};
+</script>

@@ -6,10 +6,11 @@
       </h2>
     </template>
 
-    <div class="py-12">
+    <div class="sm:py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-4">
-          Statistics
+        <div class="grid grid-cols-2 gap-4">
+          <EventChart :title="'Your statistics'" :series="your_series"></EventChart>
+          <EventChart :title="'Overall statistics'" :series="all_series"></EventChart>
         </div>
       </div>
     </div>
@@ -19,10 +20,54 @@
 <script>
 import {defineComponent} from 'vue'
 import AppLayout from '@/Layouts/AppLayout.vue'
+import EventChart from "@/Components/EventChart";
+
+function mapEvent(event) {
+  return [
+    event.created_at,
+    event.amount
+  ];
+}
 
 export default defineComponent({
   components: {
+    EventChart,
     AppLayout,
+  },
+  props: {
+    stats: {
+      type: Object,
+      required: true,
+    },
+  },
+  mounted() {
+    console.log(this.stats)
+  },
+  computed: {
+    your_series() {
+      return [
+        {
+          name: 'Used',
+          data: this.stats.your.used.data.map(mapEvent),
+        },
+        {
+          name: 'Washed',
+          data: this.stats.your.washed.data.map(mapEvent),
+        }
+      ]
+    },
+    all_series() {
+      return [
+        {
+          name: 'Used',
+          data: this.stats.all.used.data.map(mapEvent),
+        },
+        {
+          name: 'Washed',
+          data: this.stats.all.washed.data.map(mapEvent),
+        }
+      ]
+    },
   },
 })
 </script>

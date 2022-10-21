@@ -35,9 +35,10 @@
   <Modal :show="showModal" @close="showModal = false">
     <div class="flex  justify-between pt-2">
       <h1>Use {{ selectedUtensil.name }}</h1>
-      <h1 class="text-white bg-gray-300 rounded-full py-1 px-2">{{
-          selectedUtensil.available
-        }}/{{ selectedUtensil.total_amount }} available</h1>
+      <h1 class="text-white bg-gray-300 rounded-full py-1 px-2">
+        {{ selectedUtensil.available }}/{{ selectedUtensil.total_amount }}
+        available
+      </h1>
     </div>
     <div class="flex flex-row w-full justify-center">
       <NumberInput

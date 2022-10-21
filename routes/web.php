@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EventsController;
 use App\Http\Controllers\UtensilController;
 use Illuminate\Foundation\Application;
@@ -26,9 +27,9 @@ Route::get('/', function () {
     ]);
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->name('dashboard');
+Route::get('dashboard', [DashboardController::class, 'index'])
+  ->name('dashboard')
+  ->middleware('auth');
 
 Route::get('utensils', [UtensilController::class, 'index'])
     ->name('utensils.index')

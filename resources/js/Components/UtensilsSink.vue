@@ -7,7 +7,6 @@
       rounded-lg
       border-2 border-dashed border-gray-300
       flex flex-col
-      m-4
       sm:ml-0
     "
   >
@@ -119,7 +118,11 @@ export default {
     chooseAmount(utensil) {
       this.selectedUtensil = utensil;
       this.selectedUtensil.quantity = 1;
-      this.showModal = true;
+      if (utensil.total_amount - utensil.available === 1) {
+        this.$emit('added', this.selectedUtensil);
+      } else {
+        this.showModal = true;
+      }
     },
   },
   computed: {

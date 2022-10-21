@@ -11,7 +11,7 @@
         {{ event.amount }}
         {{ event.utensil }}
       </div>
-      <span class="">{{ event.created_at }}</span>
+      <span class="">{{ event.created_at_diff }}</span>
     </div>
   </div>
 </template>
