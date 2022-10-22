@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EventsController;
 use App\Http\Controllers\UtensilController;
 use Illuminate\Foundation\Application;
@@ -26,9 +27,9 @@ Route::get('/', function () {
     ]);
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->name('dashboard');
+Route::get('dashboard', [DashboardController::class, 'index'])
+  ->name('dashboard')
+  ->middleware('auth');
 
 Route::get('utensils', [UtensilController::class, 'index'])
     ->name('utensils.index')
@@ -42,10 +43,18 @@ Route::post('utensils', [UtensilController::class, 'store'])
     ->name('utensils.store')
     ->middleware('auth');
 
-Route::get('dishwashing', [EventsController::class, 'index'])
-    ->name('dishwashing.index')
+Route::get('utensils/{utensil}', [UtensilController::class, 'show'])
+    ->name('utensils.show')
     ->middleware('auth');
 
-Route::post('events', [EventsController::class, 'store'])
-    ->name('events.store')
+Route::get('events', [EventsController::class, 'index'])
+    ->name('events.index')
+    ->middleware('auth');
+
+Route::post('events/use', [EventsController::class, 'use'])
+    ->name('events.use')
+    ->middleware('auth');
+
+Route::post('events/wash', [EventsController::class, 'wash'])
+    ->name('events.wash')
     ->middleware('auth');

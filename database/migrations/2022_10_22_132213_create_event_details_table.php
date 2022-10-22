@@ -15,10 +15,9 @@ return new class extends Migration
     {
         Schema::create('event_details', function (Blueprint $table) {
             $table->id();
-            $table->integer('amount')->default(1);
             $table->foreignId('event_id')->constrained()->onDelete('cascade');
             $table->foreignId('utensil_id')->constrained()->onDelete('cascade');
-            $table->timestamps();
+            $table->integer('amount')->default(1);
         });
     }
 

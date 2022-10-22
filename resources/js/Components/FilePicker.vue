@@ -1,9 +1,7 @@
 <template>
-<div>
+  <div>
 
     <input
-      type="file"
-      @input="$emit('update:modelValue', $event.target.files[0])"
       class="
         block
         w-full
@@ -22,16 +20,19 @@
         hover:file:cursor-pointer
         hover:file:bg-indigo-100
       "
+      type="file"
+      @input="$emit('update:modelValue', $event.target.files[0])"
     />
     <div v-if="progress" class="bg-gray-200 rounded-full h-3 mt-4 flex flex-row">
-        <div class="bg-indigo-600 h-3 rounded-full transition-all ease-in-out transition-duration-1000" :style="{width: progress.percentage + '%'}"></div>
+      <div :style="{width: progress.percentage + '%'}"
+           class="bg-indigo-600 h-3 rounded-full transition-all ease-in-out transition-duration-1000"></div>
     </div>
-</div>
+  </div>
 </template>
 
 <script>
 export default {
-    props: ['modelValue', 'progress'],
-    emits: ['update:modelValue']
+  props: ['modelValue', 'progress'],
+  emits: ['update:modelValue']
 }
 </script>

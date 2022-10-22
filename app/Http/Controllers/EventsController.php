@@ -2,111 +2,94 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\EventDetailsResource;
+use App\Http\Resources\EventResource;
 use App\Models\Event;
 use App\Models\EventType;
+use App\Models\EventDetails;
+use App\Models\Utensil;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Validation\Rule;
-use Validator;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class EventsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
+  /**
+   * Display a listing of the resource.
+   *
+   * @return Response
+   */
+  public function index(): Response
+  {
+    return Inertia::render('Dishwashing', [
+      'utensils' => Utensil::whereColumn('available', '<', 'total_amount')->get(),
+      'events' => EventDetailsResource::collection(EventDetails::with('utensil', 'event', 'event.event_type', 'event.user')
+        ->orderBy('id', 'desc')
+        ->get()),
+    ]);
+  }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+  public function use(Request $request): RedirectResponse
+  {
+    $request->validate([
+      'utensils' => 'required|array',
+      'utensils.*.id' => 'required|exists:utensils,id',
+      'utensils.*.quantity' => 'required|integer|min:1',
+    ]);
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function store(Request $request)
-    {
-        Log::channel('stderr')->info('EventsController@store');
-        Log::channel('stderr')->info($request->all());
-        $request->validate([
-            'event_type_id'=>'required|exists:event_types,id',
-            'utensils'=>'required|array',
-            'utensils.*.id'=>'required|exists:utensils,id',
-            'utensils.*.used'=>'required|integer|min:1',
+    $eventType = EventType::where('name', 'used')->first();
+    $event = Event::create([
+      'user_id' => auth()->id(),
+      'event_type_id' => $eventType->id,
+    ]);
+
+    foreach ($request->utensils as $data) {
+      $utensil = Utensil::find($data['id']);
+      $quantity = $data['quantity'];
+
+      if ($utensil->available >= $quantity) {
+        $utensil->available -= $quantity;
+        $utensil->save();
+        $event->details()->create([
+          'utensil_id' => $utensil->id,
+          'amount' => $quantity,
         ]);
-        Log::channel('stderr')->info('EventsController@store: validation passed');
+      }
+    }
 
-        $event = Event::create([
-            'event_type_id'=>$request->event_type_id,
-            'user_id'=>auth()->id(),
+    return Redirect::route('events.index');
+  }
+
+  public function wash(Request $request): RedirectResponse
+  {
+    $request->validate([
+      'utensils' => 'required|array',
+      'utensils.*.id' => 'required|exists:utensils,id',
+      'utensils.*.quantity' => 'required|integer|min:1',
+    ]);
+
+    $eventType = EventType::where('name', 'washed')->first();
+    $event = Event::create([
+      'user_id' => auth()->id(),
+      'event_type_id' => $eventType->id,
+    ]);
+
+    foreach ($request->utensils as $data) {
+      $utensil = Utensil::find($data['id']);
+      $quantity = $data['quantity'];
+
+      if ($quantity + $utensil->available <= $utensil->total_amount) {
+        $utensil->available += $quantity;
+        $utensil->save();
+        $event->details()->create([
+          'utensil_id' => $utensil->id,
+          'amount' => $quantity,
         ]);
-
-        foreach ($request->utensils as $utensil) {
-            $event->details()->create([
-                'utensil_id'=>$utensil['id'],
-                'amount'=>$utensil['used'],
-            ]);
-        }
-
-        return Redirect::route('events.index');
+      }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Event  $event
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Event $event)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Event  $event
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Event $event)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Event  $event
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Event $event)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Event  $event
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Event $event)
-    {
-        //
-    }
+    return Redirect::route('events.index');
+  }
 }

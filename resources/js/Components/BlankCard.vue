@@ -8,7 +8,8 @@
         h-full
         border-dashed border-2
         rounded-lg
-        hover:bg-gray-200 hover:border-solid
+        hover:bg-gray-200
+        hover:border-solid
         transition-all
         duration-300
         ease-in-out
@@ -32,14 +33,14 @@
         <svg
           class="h-6 w-6"
           fill="none"
-          viewBox="0 0 24 24"
           stroke="currentColor"
+          viewBox="0 0 24 24"
         >
           <path
+            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="2"
-            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
           />
         </svg>
       </div>
@@ -47,3 +48,7 @@
     </div>
   </div>
 </template>
+
+<script>
+  export default {};
+</script>
