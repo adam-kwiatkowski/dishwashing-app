@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\EventDetailsResource;
 use App\Http\Resources\EventResource;
 use App\Models\Event;
 use App\Models\EventType;
+use App\Models\EventDetails;
 use App\Models\Utensil;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -21,13 +23,11 @@ class EventsController extends Controller
    */
   public function index(): Response
   {
-    return Inertia::Render('Dishwashing', [
+    return Inertia::render('Dishwashing', [
       'utensils' => Utensil::whereColumn('available', '<', 'total_amount')->get(),
-      'events' => EventResource::collection(
-        Event::with('user', 'event_type', 'utensil')
-          ->orderBy('id', 'desc')
-          ->get(),
-      ),
+      'events' => EventDetailsResource::collection(EventDetails::with('utensil', 'event', 'event.event_type', 'event.user')
+        ->orderBy('id', 'desc')
+        ->get()),
     ]);
   }
 
@@ -40,6 +40,10 @@ class EventsController extends Controller
     ]);
 
     $eventType = EventType::where('name', 'used')->first();
+    $event = Event::create([
+      'user_id' => auth()->id(),
+      'event_type_id' => $eventType->id,
+    ]);
 
     foreach ($request->utensils as $data) {
       $utensil = Utensil::find($data['id']);
@@ -48,11 +52,9 @@ class EventsController extends Controller
       if ($utensil->available >= $quantity) {
         $utensil->available -= $quantity;
         $utensil->save();
-        Event::create([
+        $event->details()->create([
+          'utensil_id' => $utensil->id,
           'amount' => $quantity,
-          'user_id' => auth()->id(),
-          'utensil_id' => $data['id'],
-          'event_type_id' => $eventType->id,
         ]);
       }
     }
@@ -69,6 +71,10 @@ class EventsController extends Controller
     ]);
 
     $eventType = EventType::where('name', 'washed')->first();
+    $event = Event::create([
+      'user_id' => auth()->id(),
+      'event_type_id' => $eventType->id,
+    ]);
 
     foreach ($request->utensils as $data) {
       $utensil = Utensil::find($data['id']);
@@ -77,11 +83,9 @@ class EventsController extends Controller
       if ($quantity + $utensil->available <= $utensil->total_amount) {
         $utensil->available += $quantity;
         $utensil->save();
-        Event::create([
+        $event->details()->create([
+          'utensil_id' => $utensil->id,
           'amount' => $quantity,
-          'user_id' => auth()->id(),
-          'utensil_id' => $data['id'],
-          'event_type_id' => $eventType->id,
         ]);
       }
     }

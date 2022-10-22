@@ -8,9 +8,9 @@
 
     <div class="sm:py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="grid grid-cols-2 gap-4">
-          <EventChart :title="'Your statistics'" :series="your_series"></EventChart>
-          <EventChart :title="'Overall statistics'" :series="all_series"></EventChart>
+        <div class="grid gap-1 sm:grid-cols-2 sm:gap-4">
+          <EventChart title="Your" :series="your_event_series"/>
+          <EventChart title="All" :series="all_event_series"/>
         </div>
       </div>
     </div>
@@ -24,8 +24,8 @@ import EventChart from "@/Components/EventChart";
 
 function mapEvent(event) {
   return [
-    event.created_at,
-    event.amount
+    event.data.created_at,
+    event.data.total_amount
   ];
 }
 
@@ -40,34 +40,29 @@ export default defineComponent({
       required: true,
     },
   },
-  mounted() {
-    console.log(this.stats)
-  },
-  computed: {
-    your_series() {
-      return [
+  data() {
+    return {
+      your_event_series: [
         {
-          name: 'Used',
-          data: this.stats.your.used.data.map(mapEvent),
+          name: "Used",
+          data: this.stats.your.used ? this.stats.your.used.map(mapEvent) : [],
         },
         {
-          name: 'Washed',
-          data: this.stats.your.washed.data.map(mapEvent),
+          name: "Washed",
+          data: this.stats.your.washed ? this.stats.your.washed.map(mapEvent) : [],
         }
-      ]
-    },
-    all_series() {
-      return [
+      ],
+      all_event_series: [
         {
-          name: 'Used',
-          data: this.stats.all.used.data.map(mapEvent),
+          name: "Used",
+          data: this.stats.all.used ? this.stats.all.used.map(mapEvent) : [],
         },
         {
-          name: 'Washed',
-          data: this.stats.all.washed.data.map(mapEvent),
+          name: "Washed",
+          data: this.stats.all.washed ? this.stats.all.washed.map(mapEvent) : [],
         }
-      ]
-    },
-  },
+      ],
+    };
+  }
 })
 </script>

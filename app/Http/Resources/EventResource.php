@@ -21,8 +21,8 @@ class EventResource extends JsonResource
       'id' => $this->id,
       'type' => $this->event_type->name,
       'user' => $this->user->name,
-      'utensil' => $this->utensil->name,
-      'amount' => $this->amount,
+      'details' => $this->details,
+      'total_amount' => $this->details->sum('amount'),
     ];
   }
 }

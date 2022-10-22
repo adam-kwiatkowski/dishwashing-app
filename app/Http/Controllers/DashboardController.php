@@ -11,32 +11,16 @@ class DashboardController extends Controller
 {
   public function index(): Response
   {
+    $events = Event::with('user', 'event_type', 'details')->get();
+
     return Inertia::render('Dashboard', [
       'stats' => [
-        'your' => [
-          'washed' => EventResource::collection(
-            Event::with('user', 'event_type', 'utensil')
-              ->where('user_id', auth()->id())
-              ->whereRelation('event_type', 'name', 'washed')
-              ->get(),
-          ),
-          'used' => EventResource::collection(
-            Event::with('user', 'event_type', 'utensil')
-              ->where('user_id', auth()->id())
-              ->whereRelation('event_type', 'name', 'used')
-              ->get(),
-          ),
-        ],
-        'all' => [
-          'washed' => EventResource::collection(
-            Event::with('user', 'event_type', 'utensil')
-              ->whereRelation('event_type', 'name', 'washed')
-              ->get()),
-          'used' => EventResource::collection(
-            Event::with('user', 'event_type', 'utensil')
-              ->whereRelation('event_type', 'name', 'used')
-              ->get()),
-        ],
+        'your' => EventResource::collection(
+          $events->where('user_id', auth()->id())
+        )->collection->groupBy('event_type.name'),
+        'all' => EventResource::collection(
+          $events
+        )->collection->groupBy('event_type.name'),
       ]
     ]);
   }

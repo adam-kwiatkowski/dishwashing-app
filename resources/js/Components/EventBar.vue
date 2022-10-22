@@ -1,5 +1,5 @@
 <template>
-  <div class="sm:bg-white overflow-hidden shadow-sm sm:rounded-lg">
+  <div class="sm:bg-white overflow-hidden sm:shadow-sm sm:rounded-lg">
     <div class="p-4 sm:bg-white border-b border-gray-200 flex flex-row">
       <div class="flex-1">
 

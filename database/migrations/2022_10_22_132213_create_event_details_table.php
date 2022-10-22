@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('events', function (Blueprint $table) {
+        Schema::create('event_details', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('event_type_id')->constrained()->onDelete('cascade');
-            $table->timestamps();
+            $table->foreignId('event_id')->constrained()->onDelete('cascade');
+            $table->foreignId('utensil_id')->constrained()->onDelete('cascade');
+            $table->integer('amount')->default(1);
         });
     }
 
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('events');
+        Schema::dropIfExists('event_details');
     }
 };
