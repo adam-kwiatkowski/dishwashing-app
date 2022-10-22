@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\EventDetailsResource;
-use App\Http\Resources\EventResource;
 use App\Models\Event;
-use App\Models\EventType;
 use App\Models\EventDetails;
+use App\Models\EventType;
 use App\Models\Utensil;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -19,15 +19,21 @@ class EventsController extends Controller
   /**
    * Display a listing of the resource.
    *
-   * @return Response
+   * @param Request $request
+   * @return AnonymousResourceCollection|Response
    */
-  public function index(): Response
+  public function index(Request $request): AnonymousResourceCollection|Response
   {
+    $events = EventDetailsResource::collection(EventDetails::with('utensil', 'event', 'event.event_type', 'event.user')
+      ->orderBy('id', 'desc')
+      ->paginate());
+
+    if ($request->wantsJson())
+      return $events;
+
     return Inertia::render('Dishwashing', [
       'utensils' => Utensil::whereColumn('available', '<', 'total_amount')->get(),
-      'events' => EventDetailsResource::collection(EventDetails::with('utensil', 'event', 'event.event_type', 'event.user')
-        ->orderBy('id', 'desc')
-        ->get()),
+      'events' => $events,
     ]);
   }
 
