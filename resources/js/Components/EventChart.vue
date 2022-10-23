@@ -6,7 +6,7 @@
       p-4
       flex flex-col flex-1
     ">
-    <h1>{{title}}</h1>
+    <h1 class="">{{title}}</h1>
     <apexchart :options="options" :series="series" height="350" type="area" width="100%"/>
   </div>
 </template>
@@ -34,7 +34,15 @@ export default {
       options: {
         xaxis: {
           type: 'datetime',
-        }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        chart: {
+          toolbar: {
+            show: true,
+          },
+        },
       },
     };
   },

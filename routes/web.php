@@ -39,6 +39,14 @@ Route::get('utensils/create', [UtensilController::class, 'create'])
     ->name('utensils.create')
     ->middleware('auth');
 
+Route::get('utensils/edit/{utensil}', [UtensilController::class, 'edit'])
+    ->name('utensils.edit')
+    ->middleware('auth');
+
+Route::post('utensils/{utensil}', [UtensilController::class, 'update'])
+    ->name('utensils.update')
+    ->middleware('auth');
+
 Route::post('utensils', [UtensilController::class, 'store'])
     ->name('utensils.store')
     ->middleware('auth');

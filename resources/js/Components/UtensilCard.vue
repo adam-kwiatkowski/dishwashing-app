@@ -12,6 +12,7 @@
       duration-300
       cursor-pointer
     "
+    v-long-press="() => { $emit('long-press') }"
   >
     <div class="shrink-0 h-16 w-16 md:h-20 md:w-20 lg:h-24 lg:w-24 bg-gray-100 rounded-full">
       <img
@@ -32,6 +33,8 @@
 </template>
 
 <script>
+import {LongPress} from "@/Directives/LongPress";
+
 export default {
   props: ["id", "name", "quantity", "image_url"],
   computed: {
@@ -39,5 +42,9 @@ export default {
       return this.name.charAt(0).toUpperCase() + this.name.slice(1);
     },
   },
+  directives: {
+    LongPress,
+  },
+  emits: ["long-press"],
 };
 </script>

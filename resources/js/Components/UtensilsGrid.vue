@@ -20,6 +20,7 @@
         :quantity="utensil.available"
         class="active:bg-gray-300"
         @click="chooseAmount(utensil.id)"
+        @long-press="editUtensil(utensil.id)"
       ></UtensilCard>
     </div>
     <Pagination
@@ -102,6 +103,9 @@ export default {
     },
     createNew() {
       Inertia.visit('/utensils/create');
+    },
+    editUtensil(id) {
+      Inertia.visit(`/utensils/edit/${id}`);
     },
     getHoverColor(available) {
       return {

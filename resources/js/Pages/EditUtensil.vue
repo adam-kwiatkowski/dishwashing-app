@@ -1,8 +1,8 @@
 <template>
-  <app-layout title="Add new utensil">
+  <app-layout title="Edit utensil">
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        Add new utensil
+        Edit utensil
       </h2>
     </template>
 
@@ -15,22 +15,22 @@
 </template>
 
 <script>
-import {defineComponent} from 'vue'
-import AppLayout from '@/Layouts/AppLayout.vue'
-import UtensilForm from '@/Components/UtensilForm.vue'
+import AppLayout from "@/Layouts/AppLayout";
+import UtensilForm from "@/Components/UtensilForm";
 import {useForm} from "@inertiajs/inertia-vue3";
-
-export default defineComponent({
+export default {
+  name: "EditUtensil",
   components: {
     AppLayout,
     UtensilForm,
   },
-  props: ['errors'],
+  props: ['errors', 'utensil'],
   data() {
     return {
       form: useForm({
-        name: null,
-        total_amount: null,
+        name: this.utensil.name,
+        total_amount: this.utensil.total_amount,
+        available: this.utensil.available,
         photo: null,
       })
     }
@@ -38,13 +38,17 @@ export default defineComponent({
   methods: {
     submit() {
       this.form.progress = { percentage: 0 }
-      this.form.post('/utensils')
+      this.form.post(`/utensils/${this.utensil.id}`)
     }
   },
   computed: {
     previewURL() {
-      return this.form.photo ? URL.createObjectURL(this.form.photo) : ''
+      return this.form.photo ? URL.createObjectURL(this.form.photo) : this.utensil.image_url
     }
   },
-})
+}
 </script>
+
+<style scoped>
+
+</style>

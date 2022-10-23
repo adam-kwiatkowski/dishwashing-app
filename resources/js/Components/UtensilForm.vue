@@ -5,8 +5,8 @@
         <div class="flex flex-col items-center justify-between h-full sm:p-4">
           <div class="shrink-0 h-48 w-48 bg-gray-100 rounded-full">
             <img
-              v-if="previewURL"
-              :src="previewURL"
+              v-if="preview_url"
+              :src="preview_url"
               alt=""
               class="w-48 h-48 rounded-full object-cover"
             />
@@ -66,6 +66,30 @@
             <p v-if="errors_list.total_amount" class="mt-2 text-sm text-red-600 dark:text-red-500">
               {{ errors_list.total_amount }}</p>
           </div>
+          <div class="col-span-2" v-if="typeof(form.available) !== 'undefined'">
+            <label class="block text-sm font-medium text-gray-700">
+              Available
+            </label>
+            <input
+              v-model="form.available"
+              class="
+                block
+                w-full
+                px-3
+                py-2
+                my-2
+                text-sm
+                leading-tight
+                border-0
+                rounded
+                focus:outline-none focus:border-gray-500
+              "
+              placeholder="Available"
+              type="number"
+            />
+            <p v-if="errors_list.available" class="mt-2 text-sm text-red-600 dark:text-red-500">
+              {{ errors_list.available }}</p>
+          </div>
         </div>
       </div>
 
@@ -122,7 +146,7 @@
           "
           type="submit"
         >
-          Add
+          Submit
           <svg
             class="ml-1 h-4 w-4 text-indigo-200"
             fill="currentColor"
@@ -142,7 +166,7 @@
 
 <script>
 
-import {Link, useForm} from '@inertiajs/inertia-vue3'
+import {Link} from '@inertiajs/inertia-vue3'
 import FilePicker from '@/Components/FilePicker.vue'
 
 export default {
@@ -150,26 +174,7 @@ export default {
     FilePicker,
     Link
   },
-  props: ['errors_list'],
-  setup() {
-    const form = useForm({
-      name: null,
-      total_amount: null,
-      photo: null,
-    })
-
-    function submit() {
-      form.progress = {percentage: 0}
-      form.post('/utensils')
-    }
-
-    return {form, submit}
-  },
-  computed: {
-    previewURL() {
-      return this.form.photo ? URL.createObjectURL(this.form.photo) : ''
-    }
-  }
+  props: ['errors_list', 'form', 'preview_url'],
 }
 
 </script>
