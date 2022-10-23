@@ -40,6 +40,10 @@ Route::post('utensils/{utensil}', [UtensilController::class, 'update'])
     ->name('utensils.update')
     ->middleware('auth');
 
+Route::delete('utensils/{utensil}', [UtensilController::class, 'destroy'])
+    ->name('utensils.destroy')
+    ->middleware('auth');
+
 Route::post('utensils', [UtensilController::class, 'store'])
     ->name('utensils.store')
     ->middleware('auth');

@@ -120,4 +120,22 @@ class UtensilController extends Controller
     $utensil->save();
     return Redirect::route('utensils.index');
   }
+
+  /**
+   * Remove the specified resource from storage.
+   *
+   * @param Utensil $utensil
+   * @return RedirectResponse
+   */
+  public function destroy(Utensil $utensil): RedirectResponse
+  {
+    Log::channel('stderr')->info('delete');
+    if ($utensil->image_url) {
+      Storage::delete('public/utensils/' . basename($utensil->image_url));
+    }
+
+    $utensil->delete();
+
+    return Redirect::route('utensils.index');
+  }
 }
