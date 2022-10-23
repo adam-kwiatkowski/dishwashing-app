@@ -17,8 +17,8 @@
     <div class="shrink-0 h-16 w-16 md:h-20 md:w-20 lg:h-24 lg:w-24 bg-gray-100 rounded-full">
       <img
         :src="this.image_url"
-        alt=""
-        class="h-16 w-16 md:h-20 md:w-20 lg:h-24 lg:w-24 rounded-full"
+        :alt="this.name"
+        class="h-16 w-16 md:h-20 md:w-20 lg:h-24 lg:w-24 rounded-full object-cover shadow-inner"
       />
     </div>
     <div class="text-center pt-4">
