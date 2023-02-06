@@ -16,11 +16,9 @@ Inventory management system for kitchenware. It's a monolithic restful SPA built
 
 ## Using Laravel Sail
 ```bash
-# Build the Docker containers
-./vendor/bin/sail up -d
+sail up -d
 ```
 
 ```bash
-# Seed the database
-./vendor/bin/sail artisan migrate:fresh --seed
+sail artisan migrate:fresh --seed
 ```
